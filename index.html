@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+ 
     <title>SAY</title>
 
     <style>
@@ -49,12 +50,26 @@
         .section-1, .section-2 {
             padding: 20px;
         }
+
+        .logo {
+            width: 100%;
+            max-width: 300px; /* Set a max-width to maintain aspect ratio */
+            height: auto; /* Ensure the height adjusts automatically */
+            display: block;
+            margin: 0 auto; /* Center the image */
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                max-width: 80%; /* Adjust the max-width for smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="section-1">
         <img src="https://th.bing.com/th/id/OIP.CughQYVLFFsENg0qi5VgrgHaHa?w=580&h=580&rs=1&pid=ImgDetMain" alt="Logo" class="logo">
-       
+        
         <h2>Yash Malik</h2>
         <h2>Sneha Sharma</h2>
         <p></p>
@@ -64,30 +79,27 @@
             <i class="fab fa-linkedin"></i>
         </a>
         
-     
         <a href="mailto:sayash2july@gmail.com"><i class="fas fa-envelope"></i></a>
     </div>
     
-        
-        <div class="section-2">
-            <h2>About</h2>
-            <p>Welcome to CC-SAY, your trusted destination for encrypting and decrypting sensitive information. Whether you’re safeguarding personal messages or securing business communications, we’ve got you covered.</p>
-            <h2>What we offer</h2>
-            <p>Encryption Services: Need to protect your data? Our robust encryption algorithms ensure that your messages remain confidential. Simply input your text, choose a key, and let our system work its magic.</p>
-            <p>Decryption Made Easy: Received an encrypted message? No worries! Our decryption tool effortlessly reverses the process. Just enter the ciphertext and the correct key, and voilà—the original message is revealed.</p>
-            <p>User-Friendly Interface: We believe security shouldn’t be complicated. Our intuitive interface ensures that even beginners can use our services confidently.</p>
+    <div class="section-2">
+        <h2>About</h2>
+        <p>Welcome to CC-SAY, your trusted destination for encrypting and decrypting sensitive information. Whether you’re safeguarding personal messages or securing business communications, we’ve got you covered.</p>
+        <h2>What we offer</h2>
+        <p>Encryption Services: Need to protect your data? Our robust encryption algorithms ensure that your messages remain confidential. Simply input your text, choose a key, and let our system work its magic.</p>
+        <p>Decryption Made Easy: Received an encrypted message? No worries! Our decryption tool effortlessly reverses the process. Just enter the ciphertext and the correct key, and voilà—the original message is revealed.</p>
+        <p>User-Friendly Interface: We believe security shouldn’t be complicated. Our intuitive interface ensures that even beginners can use our services confidently.</p>
 
-            <div class="d-flex gap-2 justify-content-center py-5">
-                <button id="getStartedButton" class="btn btn-primary">GET STARTED
-                    <svg class="bi ms-1" width="20" height="20">
-                        <use xlink:href="#arrow-right-short"></use>
-                    </svg>
-                </button>
-            </div>
-            
-            <h2>Contact</h2>
-            <p>saybitches@gmail.com</p>
+        <div class="d-flex gap-2 justify-content-center py-5">
+            <button id="getStartedButton" class="btn btn-primary">GET STARTED
+                <svg class="bi ms-1" width="20" height="20">
+                    <use xlink:href="#arrow-right-short"></use>
+                </svg>
+            </button>
         </div>
+        
+        <h2>Contact</h2>
+        <p>saybitches@gmail.com</p>
     </div>
 
     <script>
@@ -97,3 +109,4 @@
     </script>
 </body>
 </html>
+
