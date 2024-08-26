@@ -10,6 +10,40 @@
     <title>SAY</title>
 
     <style>
+        body {
+            background-color: #000; /* Ensure a dark background for the glow to be visible */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 0 30px 15px #08bdfa inset; /* Light blue glow on the edges */
+        }
+
+        .glow {
+            text-align: center;
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
+        }
+
+        .blue-glow {
+            text-align: center;
+            font-size: 2em;
+            color: #08bdfa;
+            text-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
+        }
+
+        .icon-glow {
+            font-size: 2em;
+            color: #08bdfa;
+            margin: 0 10px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .icon-glow:hover {
+            color: #ff0000; /* Change the icon color to red */
+            text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000, 0 0 45px #ff0000, 0 0 60px #ff0000;
+        }
+
         .btn {
             padding: 10px 20px;
             margin-right: 10px;
@@ -22,15 +56,12 @@
             display: inline-flex;
             align-items: center;
             font-size: 16px;
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn:hover {
             background-color: #0056b3; /* Darker shade on hover */
-        }
-
-        .btn svg {
-            margin-left: 5px;
-            fill: #fff; /* Ensure SVG icon is white */
         }
 
         .btn-primary {
@@ -39,6 +70,7 @@
 
         .btn-primary:hover {
             background-color: #0056b3; /* Darker shade on hover */
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
         }
 
         .grid-2 {
@@ -70,16 +102,15 @@
     <div class="section-1">
         <img src="https://th.bing.com/th/id/OIP.CughQYVLFFsENg0qi5VgrgHaHa?w=580&h=580&rs=1&pid=ImgDetMain" alt="Logo" class="logo">
         
-        <h2>Yash Malik</h2>
-        <h2>Sneha Sharma</h2>
-        <p></p>
-        <a href="https://www.instagram.com/yashu_af/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <h1 class="glow">CAESAR CIPHER</h1> <!-- Glowing Title -->
 
-        <a href="https://www.linkedin.com/in/yash-malik-2004-ss/" target="_blank">
-            <i class="fab fa-linkedin"></i>
-        </a>
-        
-        <a href="mailto:sayash2july@gmail.com"><i class="fas fa-envelope"></i></a>
+        <h2 class="blue-glow">Yash Malik</h2> <!-- White Text with Blue Glow -->
+        <h2 class="blue-glow">Sneha Sharma</h2> <!-- White Text with Blue Glow -->
+        <h2>Contact</h2>
+        <p></p>
+        <a href="https://www.instagram.com/yashu_af/" target="_blank" class="icon-glow"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/yash-malik-2004-ss/" target="_blank" class="icon-glow"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:sayash2july@gmail.com" class="icon-glow"><i class="fas fa-envelope"></i></a>
     </div>
     
     <div class="section-2">
@@ -97,9 +128,6 @@
                 </svg>
             </button>
         </div>
-        
-        <h2>Contact</h2>
-        <p>saybitches@gmail.com</p>
     </div>
 
     <script>
