@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher with File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 16px; /* Increased base font size */
+            transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for glow effect */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em; /* Increased font size for headings */
+        }
+
+        label, select, input, textarea, button {
+            font-size: 1em; /* Increase font size for form elements */
+        }
+
+        textarea {
+            font-size: 1em; /* Ensure the text area text is larger */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em; /* Increased font size for buttons */
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #f00, 0 0 10px #f00, 0 0 15px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00; }
+            100% { text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 60px #f00, 0 0 80px #f00, 0 0 100px #f00; }
+        }
+
+        .glow-red {
+            animation: glow 1.5s ease-in-out infinite;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Caesar Cipher</h1>
+        
+        <!-- Mode Selection -->
+        <label for="mode">Choose Mode:</label>
+        <select id="mode">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select><br><br>
+        
+        <!-- Key Input -->
+        <label for="key">Enter Key (number, letters, or symbols):</label>
+        <input type="text" id="key" required><br><br>
+        
+        <!-- File Input -->
+        <label for="fileInput">Upload File:</label>
+        <input type="file" id="fileInput" accept=".txt"><br><br>
+        
+        <!-- Text Areas -->
+        <textarea id="inputText" placeholder="Or enter text here..."></textarea><br><br>
+        <textarea id="outputText" placeholder="Result will appear here..." readonly></textarea><br><br>
+        
+        <!-- Buttons -->
+        <div class="button-group">
+            <button onclick="processText()">Process Text</button>
+            <button onclick="downloadFile()">Download File</button>
+            <button id="goBackButton"><a href="index.html">Go Back</a></button>
+        </div>
+    </div>
+    
+    <script>
+        function getKeyValue() {
+            const keyInput = document.getElementById('key').value;
+
+            if (!isNaN(keyInput) && keyInput.trim() !== '') {
+                // If the input is a number, use it directly
+                return parseInt(keyInput, 10) % 26;
+            } else {
+                // Otherwise, use the sum of ASCII values
+                let total = 0;
+                for (let i = 0; i < keyInput.length; i++) {
+                    total += keyInput.charCodeAt(i);
+                }
+                return total % 26; 
+            }
+        }
+        
+        function shift(letter, key) {
+            let unicode = letter.charCodeAt(0);
+
+            if (letter >= 'a' && letter <= 'z') {
+                unicode = ((unicode - 97 + key) % 26 + 26) % 26 + 97;
+            } else if (letter >= 'A' && letter <= 'Z') {
+                unicode = ((unicode - 65 + key) % 26 + 26) % 26 + 65;
+            }
+            
+            return String.fromCharCode(unicode);
+        }
+        
+        function unshift(letter, key) {
+            return shift(letter, -key); // Decrypt by shifting in the opposite direction
+        }
+        
+        function encrypt(plaintext, key) {
+            let ciphertext = '';
+            for (let i = 0; i < plaintext.length; i++) {
+                let letter = plaintext[i];
+                if (letter === ' ') {
+                    const spacerange = ['{', '}', '|', '~'];
+                    const rand = spacerange[Math.floor(Math.random() * spacerange.length)];
+                    ciphertext += rand;
+                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
+                    ciphertext += shift(letter, key);
+                } else {
+                    ciphertext += letter;
+                }
+            }
+            return ciphertext;
+        }
+        
+        function decrypt(ciphertext, key) {
+            let plaintext = '';
+            const spacerange = ['{', '}', '|', '~'];
+            for (let i = 0; i < ciphertext.length; i++) {
+                let letter = ciphertext[i];
+                if (spacerange.includes(letter)) {
+                    plaintext += ' ';
+                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
+                    plaintext += unshift(letter, key);
+                } else {
+                    plaintext += letter;
+                }
+            }
+            return plaintext;
+        }
+        
+        function processText() {
+            const key = getKeyValue();
+            const mode = document.getElementById('mode').value;
+            const inputText = document.getElementById('inputText').value;
+            const fileInput = document.getElementById('fileInput').files[0];
+            
+            if (key === 0 && document.getElementById('key').value.trim() === '') {
+                alert('Please enter a valid key.');
+                document.body.classList.add('glow-red'); // Add the glow effect
+                return;
+            } else {
+                document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
+            }
+            
+            if (fileInput) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const fileContent = event.target.result;
+                    let outputText;
+                    if (mode === 'encrypt') {
+                        outputText = encrypt(fileContent, key);
+                    } else if (mode === 'decrypt') {
+                        outputText = decrypt(fileContent, key);
+                    }
+                    document.getElementById('outputText').value = outputText;
+                };
+                reader.readAsText(fileInput);
+            } else {
+                let outputText;
+                if (mode === 'encrypt') {
+                    outputText = encrypt(inputText, key);
+                } else if (mode === 'decrypt') {
+                    outputText = decrypt(inputText, key);
+                }
+                document.getElementById('outputText').value = outputText;
+            }
+        }
+        
+        function downloadFile() {
+            const outputText = document.getElementById('outputText').value;
+            if (outputText) {
+                const blob = new Blob([outputText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'result.txt';
+                a.click();
+                URL.revokeObjectURL(url);
+            } else {
+                alert('No data to download.');
+            }
+        }
+        
+        document.getElementById('goBackButton').addEventListener('click', function() {
+            window.location.href = 'index.html'; // or use history.back() to go back to the previous page
+        });
+    </script>
+</body>
+</html>
+
+
+
+
