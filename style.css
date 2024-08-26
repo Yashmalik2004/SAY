@@ -52,6 +52,21 @@ a:hover {
     border-radius: 8px;
     background-color: rgba(0, 191, 255, 0.1); /* Semi-transparent background */
 }
+@keyframes flicker {
+    0% { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+    20% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+    40% { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+    60% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+    80% { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+    100% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em; /* Increased font size for headings */
+    color: #fff;
+    animation: flicker 1.5s infinite; /* Apply flicker animation */
+}
 
 .section-1 a:hover {
     background-color: rgba(0, 191, 255, 0.2); /* Darker semi-transparent background on hover */
@@ -114,3 +129,4 @@ a:hover {
         padding-top: 2rem;
     }
 }
+
