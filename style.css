@@ -1,102 +1,114 @@
 /* global */
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
 
-.grid-2{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-}
-
-body{
+body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #edbeeb;
-    color: #a24afb;
-
+    background: linear-gradient(135deg, #2b2d52, #3d4f6c); /* Deep space-like gradient background */
+    color: #dcdcdc; /* Light gray text for contrast */
 }
 
-h2,.white{
-    color: #cc04f9;
+h2, .white {
+    color: #00bfff; /* Bright blue for sci-fi glow effect */
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.8); /* Neon glow effect */
 }
 
-a{
-    color: #7505b2;
+a {
+    color: #8a2be2; /* Electric purple color */
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s, text-shadow 0.3s; /* Smooth transition for hover effects */
 }
+
+a:hover {
+    color: #ff4500; /* Bright orange on hover */
+    text-shadow: 0 0 15px rgba(255, 69, 0, 0.9); /* Glowing orange effect */
+}
+
 /* section 1 */
-.section-1{
+.section-1 {
     padding-top: 40vh;
     text-align: center;
+    color: #e0e0e0; /* Lighter text color for readability */
 }
 
-.section-1 p{
-    font-size: 1.1rem;
-    padding-bottom: 10px;
-    margin:0;
+.section-1 p {
+    font-size: 1.2rem;
+    padding-bottom: 15px;
+    margin: 0;
 }
 
-.section-1 h2{
-    font-size: 1.7rem;
-    margin-bottom: 10px;
+.section-1 h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700; /* Bold heading for impact */
 }
 
-.section-1 a{
-    font-size: 1.5rem;
-    padding: 10px;
+.section-1 a {
+    font-size: 1.6rem;
+    padding: 15px;
+    border: 2px solid #00bfff; /* Neon border for links */
+    border-radius: 8px;
+    background-color: rgba(0, 191, 255, 0.1); /* Semi-transparent background */
 }
+
+.section-1 a:hover {
+    background-color: rgba(0, 191, 255, 0.2); /* Darker semi-transparent background on hover */
+}
+
 /* section 2 */
-.section-2{
+.section-2 {
     padding-top: 10vh;
     width: 70%;
+    margin: 0 auto; /* Center align the section */
 }
 
-.section-2 h2{
-    font-size: 1.7rem;
-    margin-bottom: 10px;
+.section-2 h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
 }
 
-.section-2 p{
-    font-size: 1.1rem;
-    padding-bottom: 10px;
-    margin:0;
-}
-
-.section-2 a{
-    display: block;
-    padding: 5px;
+.section-2 p {
     font-size: 1.2rem;
-    padding-left: 0;
-    width: 100px;
+    padding-bottom: 15px;
+    margin: 0;
 }
-/* animations / utilities */
-.section-2 a:hover{
+
+.section-2 a {
+    display: block;
+    padding: 10px;
     font-size: 1.3rem;
-    color: #eb3030;
-    cursor: pointer;
-    transition: 0.2s;
+    width: 150px;
+    border: 2px solid #8a2be2; /* Electric purple border */
+    border-radius: 8px;
+    background-color: rgba(138, 43, 226, 0.1); /* Semi-transparent purple background */
 }
 
-.section-1 a:hover{
-    color: #ea1b1b;
-    cursor: pointer;
-    transition: 0.3s;
+.section-2 a:hover {
+    background-color: rgba(138, 43, 226, 0.2); /* Darker semi-transparent background on hover */
+    color: #ff4500; /* Bright orange text on hover */
+    font-size: 1.4rem; /* Slightly larger font size on hover */
 }
 
-.white:hover{
+/* animations / utilities */
+.white:hover {
     position: relative;
-    padding-left: 10px;
+    padding-left: 15px; /* Increased padding for hover effect */
+    transition: padding-left 0.3s; /* Smooth transition for padding */
 }
 
-/* media queres */
-@media(max-width:780px){
-    .grid-2{
+/* media queries */
+@media(max-width: 780px) {
+    .grid-2 {
         grid-template-columns: 1fr;
     }
-    .section-1{
-        padding:0;
+    .section-1 {
+        padding: 0;
         padding-top: 5rem;
     }
-    .section-2{
+    .section-2 {
         padding: 0;
         padding-left: 1.5rem;
         padding-top: 2rem;
