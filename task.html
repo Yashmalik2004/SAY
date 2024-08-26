@@ -14,7 +14,13 @@
             border: 5px solid transparent;
             border-image: linear-gradient(45deg, #00f, #0ff, #00f, #0ff);
             border-image-slice: 1;
-            box-shadow: 0 0 15px #00f, 0 0 30px #0ff;
+            animation: flicker 1.5s infinite; /* Apply flicker animation */
+        }
+
+        @keyframes flicker {
+            0% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
+            50% { box-shadow: 0 0 25px #00f, 0 0 40px #0ff; }
+            100% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
         }
 
         .container {
@@ -85,9 +91,10 @@
             border: 1px solid red;
         }
 
-        .button-group button:hover {
-            background-color: #0056b3; /* Darker shade */
-            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
+        /* New green glow effect */
+        .glow-green {
+            border-image: linear-gradient(45deg, #0f0, #0f0, #0f0, #0f0);
+            box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
         }
     </style>
 </head>
@@ -203,6 +210,14 @@
                 document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
             }
             
+            // Add green glow effect
+            document.body.classList.add('glow-green');
+            
+            // Remove green glow effect after 3 seconds
+            setTimeout(() => {
+                document.body.classList.remove('glow-green');
+            }, 3000);
+            
             if (fileInput) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -248,6 +263,7 @@
     </script>
 </body>
 </html>
+
 
 
 
