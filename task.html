@@ -11,6 +11,10 @@
             margin: 20px;
             font-size: 16px; /* Increased base font size */
             transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for glow effect */
+            border: 5px solid transparent;
+            border-image: linear-gradient(45deg, #00f, #0ff, #00f, #0ff);
+            border-image-slice: 1;
+            box-shadow: 0 0 15px #00f, 0 0 30px #0ff;
         }
 
         .container {
@@ -24,6 +28,8 @@
         h1 {
             text-align: center;
             font-size: 2.5em; /* Increased font size for headings */
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
+            color: #fff;
         }
 
         label, select, input, textarea, button {
@@ -34,17 +40,30 @@
             font-size: 1em; /* Ensure the text area text is larger */
         }
 
-        button {
+        button, input[type="file"] {
             padding: 10px 20px;
             margin-right: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em; /* Increased font size for buttons */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background-color: #ddd;
+            background-color: #0056b3; /* Darker shade */
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
+        }
+
+        input[type="file"] {
+            background-color: #f8f9fa; /* Primary button color */
+            color: #fff;
+            border: 1px solid #007bff;
+        }
+
+        input[type="file"]:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f, 0 0 40px #00f; /* Blue glow effect */
         }
 
         textarea, input[type="file"] {
@@ -64,6 +83,11 @@
             animation: glow 1.5s ease-in-out infinite;
             background-color: rgba(255, 0, 0, 0.1);
             border: 1px solid red;
+        }
+
+        .button-group button:hover {
+            background-color: #0056b3; /* Darker shade */
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
         }
     </style>
 </head>
@@ -224,6 +248,7 @@
     </script>
 </body>
 </html>
+
 
 
 
