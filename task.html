@@ -97,20 +97,14 @@
         }
         
         #keyDisplay {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #e9ecef;
-    color: black; /* Default color for the text */
-}
-
-#keyDisplay.key-generated {
-    color: #007bff; /* Color for the dynamically generated key */
-}
-
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #0c0a0a;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
     </style>
 </head>
 <body>
@@ -126,7 +120,7 @@
         </select><br><br>
         
         <!-- Key Input -->
-        <label for="key">Enter Key (number, letters, or symbols):</label>
+        <label for="key">Enter Key (letters, numbers, or symbols):</label>
         <input type="text" id="key"><br><br>
         
         <!-- Key Display -->
@@ -149,15 +143,26 @@
     </div>
     
     <script>
+        function generateRandomKey(length = 12) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+            let key = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                key += characters[randomIndex];
+            }
+            return key;
+        }
+
         function getKeyValue() {
             const keyInput = document.getElementById('key').value;
             let key;
 
-            if (!isNaN(keyInput) && keyInput.trim() !== '') {
-                key = parseInt(keyInput, 10) % 26;
+            if (keyInput.trim() !== '') {
+                key = keyInput;
             } else {
-                key = Math.floor(Math.random() * 26); // Generate a random key between 0 and 25
+                key = generateRandomKey();
                 document.getElementById('keyDisplay').textContent = `Key: ${key}`;
+                document.getElementById('keyDisplay').classList.add('key-generated');
                 document.getElementById('key').value = key;
             }
             return key;
