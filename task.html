@@ -146,165 +146,142 @@
     </script>
 </body>
 </html>
- 
-    <script>
-        function generateRandomKey(length = 12) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
-            let key = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                key += characters[randomIndex];
-            }
-            return key;
+<script>
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?/`~';
+
+    function generateRandomKey(length = 12) {
+        let key = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            key += characters[randomIndex];
         }
+        return key;
+    }
 
-        function getKeyValue() {
-            const keyInput = document.getElementById('key').value;
-            let key;
+    function getKeyValue() {
+        const keyInput = document.getElementById('key').value;
+        let key;
 
-            if (keyInput.trim() !== '') {
-                key = keyInput;
-            } else {
-                key = generateRandomKey();
-                document.getElementById('keyDisplay').textContent = `Key: ${key}`;
-                document.getElementById('keyDisplay').classList.add('key-generated');
-                document.getElementById('key').value = key;
-            }
-            return key;
+        if (keyInput.trim() !== '') {
+            key = keyInput;
+        } else {
+            key = generateRandomKey();
+            document.getElementById('keyDisplay').textContent = `Key: ${key}`;
+            document.getElementById('keyDisplay').classList.add('key-generated');
+            document.getElementById('key').value = key;
+        }
+        return key;
+    }
+    
+    function shift(letter, key) {
+        const index = characters.indexOf(letter);
+        if (index === -1) return letter; // Return the letter unchanged if it's not in the set
+
+        let keyValue = 0;
+
+        // Convert key to a numeric value
+        for (let i = 0; i < key.length; i++) {
+            keyValue += characters.indexOf(key[i]);
+        }
+        keyValue = keyValue % characters.length; // Limit keyValue to the length of the character set
+
+        const newIndex = (index + keyValue) % characters.length;
+        return characters[newIndex];
+    }
+    
+    function unshift(letter, key) {
+        const index = characters.indexOf(letter);
+        if (index === -1) return letter; // Return the letter unchanged if it's not in the set
+
+        let keyValue = 0;
+
+        // Convert key to a numeric value
+        for (let i = 0; i < key.length; i++) {
+            keyValue += characters.indexOf(key[i]);
+        }
+        keyValue = keyValue % characters.length; // Limit keyValue to the length of the character set
+
+        const newIndex = (index - keyValue + characters.length) % characters.length;
+        return characters[newIndex];
+    }
+    
+    function encrypt(plaintext, key) {
+        let ciphertext = '';
+        for (let i = 0; i < plaintext.length; i++) {
+            let letter = plaintext[i];
+            ciphertext += shift(letter, key);
+        }
+        return ciphertext;
+    }
+    
+    function decrypt(ciphertext, key) {
+        let plaintext = '';
+        for (let i = 0; i < ciphertext.length; i++) {
+            let letter = ciphertext[i];
+            plaintext += unshift(letter, key);
+        }
+        return plaintext;
+    }
+    
+    function processText() {
+        const key = getKeyValue();
+        const mode = document.getElementById('mode').value;
+        const inputText = document.getElementById('inputText').value;
+        const fileInput = document.getElementById('fileInput').files[0];
+        
+        if (!key.trim()) {
+            alert('Please enter a valid key.');
+            document.body.classList.add('glow-red');
+            return;
+        } else {
+            document.body.classList.remove('glow-red');
         }
         
-        function shift(letter, key) {
-            let unicode = letter.charCodeAt(0);
-            let keyValue = 0;
-            
-            // Convert key to a numeric value
-            for (let i = 0; i < key.length; i++) {
-                keyValue += key.charCodeAt(i);
-            }
-            keyValue = keyValue % 26; // Limit keyValue to 0-25
-
-            if (letter >= 'a' && letter <= 'z') {
-                unicode = ((unicode - 97 + keyValue) % 26 + 26) % 26 + 97;
-            } else if (letter >= 'A' && letter <= 'Z') {
-                unicode = ((unicode - 65 + keyValue) % 26 + 26) % 26 + 65;
-            }
-            
-            return String.fromCharCode(unicode);
-        }
+        document.body.classList.add('glow-green');
+        setTimeout(() => {
+            document.body.classList.remove('glow-green');
+        }, 3000);
         
-        function unshift(letter, key) {
-            let unicode = letter.charCodeAt(0);
-            let keyValue = 0;
-
-            // Convert key to a numeric value
-            for (let i = 0; i < key.length; i++) {
-                keyValue += key.charCodeAt(i);
-            }
-            keyValue = keyValue % 26; // Limit keyValue to 0-25
-
-            if (letter >= 'a' && letter <= 'z') {
-                unicode = ((unicode - 97 - keyValue + 26) % 26 + 26) % 26 + 97;
-            } else if (letter >= 'A' && letter <= 'Z') {
-                unicode = ((unicode - 65 - keyValue + 26) % 26 + 26) % 26 + 65;
-            }
-            
-            return String.fromCharCode(unicode);
-        }
-        
-        function encrypt(plaintext, key) {
-            let ciphertext = '';
-            for (let i = 0; i < plaintext.length; i++) {
-                let letter = plaintext[i];
-                if (letter === ' ') {
-                    const spacerange = ['{', '}', '|', '~'];
-                    const rand = spacerange[Math.floor(Math.random() * spacerange.length)];
-                    ciphertext += rand;
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    ciphertext += shift(letter, key);
-                } else {
-                    ciphertext += letter;
-                }
-            }
-            return ciphertext;
-        }
-        
-        function decrypt(ciphertext, key) {
-            let plaintext = '';
-            const spacerange = ['{', '}', '|', '~'];
-            for (let i = 0; i < ciphertext.length; i++) {
-                let letter = ciphertext[i];
-                if (spacerange.includes(letter)) {
-                    plaintext += ' ';
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    plaintext += unshift(letter, key);
-                } else {
-                    plaintext += letter;
-                }
-            }
-            return plaintext;
-        }
-        
-        function processText() {
-            const key = getKeyValue();
-            const mode = document.getElementById('mode').value;
-            const inputText = document.getElementById('inputText').value;
-            const fileInput = document.getElementById('fileInput').files[0];
-            
-            if (!key.trim()) {
-                alert('Please enter a valid key.');
-                document.body.classList.add('glow-red');
-                return;
-            } else {
-                document.body.classList.remove('glow-red');
-            }
-            
-            document.body.classList.add('glow-green');
-            setTimeout(() => {
-                document.body.classList.remove('glow-green');
-            }, 3000);
-            
-            if (fileInput) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const fileContent = event.target.result;
-                    let outputText;
-                    if (mode === 'encrypt') {
-                        outputText = encrypt(fileContent, key);
-                    } else if (mode === 'decrypt') {
-                        outputText = decrypt(fileContent, key);
-                    }
-                    document.getElementById('outputText').value = outputText;
-                };
-                reader.readAsText(fileInput);
-            } else {
+        if (fileInput) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fileContent = event.target.result;
                 let outputText;
                 if (mode === 'encrypt') {
-                    outputText = encrypt(inputText, key);
+                    outputText = encrypt(fileContent, key);
                 } else if (mode === 'decrypt') {
-                    outputText = decrypt(inputText, key);
+                    outputText = decrypt(fileContent, key);
                 }
                 document.getElementById('outputText').value = outputText;
+            };
+            reader.readAsText(fileInput);
+        } else {
+            let outputText;
+            if (mode === 'encrypt') {
+                outputText = encrypt(inputText, key);
+            } else if (mode === 'decrypt') {
+                outputText = decrypt(inputText, key);
             }
+            document.getElementById('outputText').value = outputText;
         }
-        
-        function downloadFile() {
-            const outputText = document.getElementById('outputText').value;
-            if (outputText) {
-                const blob = new Blob([outputText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'result.txt';
-                a.click();
-                URL.revokeObjectURL(url);
-            } else {
-                alert('No data to download.');
-            }
+    }
+    
+    function downloadFile() {
+        const outputText = document.getElementById('outputText').value;
+        if (outputText) {
+            const blob = new Blob([outputText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'result.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            alert('No data to download.');
         }
-        
-        document.getElementById('goBackButton').addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
-    </script>
-</body>
-</html>
+    }
+    
+    document.getElementById('goBackButton').addEventListener('click', function() {
+        window.location.href = 'index.html';
+    });
+</script>
