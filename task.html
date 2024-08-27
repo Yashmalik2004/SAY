@@ -97,7 +97,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="glow-pink">Caesar Cipher</h1>
+        <h1 class="glow">Caesar Cipher</h1>
         
         <!-- Mode Selection -->
         <label for="mode">Choose Mode:</label>
@@ -142,62 +142,47 @@
                 return total % 26; 
             }
         }
-        
-        function shift(letter, key) {
-            let unicode = letter.charCodeAt(0);
 
-            if (letter >= 'a' && letter <= 'z') {
-                unicode = ((unicode - 97 + key) % 26 + 26) % 26 + 97;
-            } else if (letter >= 'A' && letter <= 'Z') {
-                unicode = ((unicode - 65 + key) % 26 + 26) % 26 + 65;
+        function shift(character, key) {
+            const charCode = character.charCodeAt(0);
+
+            // Only shift characters between ASCII 32 (space) and 126 (tilde)
+            if (charCode >= 32 && charCode <= 126) {
+                const shiftedCharCode = ((charCode - 32 + key) % 95 + 95) % 95 + 32;
+                return String.fromCharCode(shiftedCharCode);
+            } else {
+                return character;
             }
-            
-            return String.fromCharCode(unicode);
         }
-        
-        function unshift(letter, key) {
-            return shift(letter, -key); // Decrypt by shifting in the opposite direction
+
+        function unshift(character, key) {
+            return shift(character, -key); // Decrypt by shifting in the opposite direction
         }
-        
+
         function encrypt(plaintext, key) {
             let ciphertext = '';
             for (let i = 0; i < plaintext.length; i++) {
                 let letter = plaintext[i];
-                if (letter === ' ') {
-                    const spacerange = ['{', '}', '|', '~'];
-                    const rand = spacerange[Math.floor(Math.random() * spacerange.length)];
-                    ciphertext += rand;
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    ciphertext += shift(letter, key);
-                } else {
-                    ciphertext += letter;
-                }
+                ciphertext += shift(letter, key);
             }
             return ciphertext;
         }
-        
+
         function decrypt(ciphertext, key) {
             let plaintext = '';
-            const spacerange = ['{', '}', '|', '~'];
             for (let i = 0; i < ciphertext.length; i++) {
                 let letter = ciphertext[i];
-                if (spacerange.includes(letter)) {
-                    plaintext += ' ';
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    plaintext += unshift(letter, key);
-                } else {
-                    plaintext += letter;
-                }
+                plaintext += unshift(letter, key);
             }
             return plaintext;
         }
-        
+
         function processText() {
             const key = getKeyValue();
             const mode = document.getElementById('mode').value;
             const inputText = document.getElementById('inputText').value;
             const fileInput = document.getElementById('fileInput').files[0];
-            
+
             if (key === 0 && document.getElementById('key').value.trim() === '') {
                 alert('Please enter a valid key.');
                 document.body.classList.add('glow-red'); // Add the glow effect
@@ -205,7 +190,7 @@
             } else {
                 document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
             }
-            
+
             if (fileInput) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -229,7 +214,7 @@
                 document.getElementById('outputText').value = outputText;
             }
         }
-        
+
         function downloadFile() {
             const outputText = document.getElementById('outputText').value;
             if (outputText) {
@@ -244,7 +229,7 @@
                 alert('No data to download.');
             }
         }
-        
+
         document.getElementById('goBackButton').addEventListener('click', function() {
             window.location.href = 'index.html'; // or use history.back() to go back to the previous page
         });
