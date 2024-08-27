@@ -9,12 +9,12 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            font-size: 16px; /* Increased base font size */
-            transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for glow effect */
+            font-size: 16px;
+            transition: background-color 0.3s, border-color 0.3s;
             border: 5px solid transparent;
             border-image: linear-gradient(45deg, #00f, #0ff, #00f, #0ff);
             border-image-slice: 1;
-            animation: flicker 1.5s infinite; /* Apply flicker animation */
+            animation: flicker 1.5s infinite;
         }
 
         @keyframes flicker {
@@ -33,17 +33,17 @@
 
         h1 {
             text-align: center;
-            font-size: 2.5em; /* Increased font size for headings */
+            font-size: 2.5em;
             text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
             color: #fff;
         }
 
         label, select, input, textarea, button {
-            font-size: 1em; /* Increase font size for form elements */
+            font-size: 1em;
         }
 
         textarea {
-            font-size: 1em; /* Ensure the text area text is larger */
+            font-size: 1em;
         }
 
         button, input[type="file"] {
@@ -52,24 +52,24 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em; /* Increased font size for buttons */
+            font-size: 1em;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3; /* Darker shade */
-            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
+            background-color: #0056b3;
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
         }
 
         input[type="file"] {
-            background-color: #f8f9fa; /* Primary button color */
+            background-color: #f8f9fa;
             color: #fff;
             border: 1px solid #007bff;
         }
 
         input[type="file"]:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f, 0 0 40px #00f; /* Blue glow effect */
+            background-color: #0056b3;
+            box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f, 0 0 40px #00f;
         }
 
         textarea, input[type="file"] {
@@ -91,11 +91,26 @@
             border: 1px solid red;
         }
 
-        /* New green glow effect */
         .glow-green {
             border-image: linear-gradient(45deg, #0f0, #0f0, #0f0, #0f0);
             box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
         }
+        
+        #keyDisplay {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    color: black; /* Default color for the text */
+}
+
+#keyDisplay.key-generated {
+    color: #007bff; /* Color for the dynamically generated key */
+}
+
     </style>
 </head>
 <body>
@@ -112,7 +127,10 @@
         
         <!-- Key Input -->
         <label for="key">Enter Key (number, letters, or symbols):</label>
-        <input type="text" id="key" required><br><br>
+        <input type="text" id="key"><br><br>
+        
+        <!-- Key Display -->
+        <div id="keyDisplay">Key: Not generated yet</div><br>
         
         <!-- File Input -->
         <label for="fileInput">Upload File:</label>
@@ -133,18 +151,16 @@
     <script>
         function getKeyValue() {
             const keyInput = document.getElementById('key').value;
+            let key;
 
             if (!isNaN(keyInput) && keyInput.trim() !== '') {
-                // If the input is a number, use it directly
-                return parseInt(keyInput, 10) % 26;
+                key = parseInt(keyInput, 10) % 26;
             } else {
-                // Otherwise, use the sum of ASCII values
-                let total = 0;
-                for (let i = 0; i < keyInput.length; i++) {
-                    total += keyInput.charCodeAt(i);
-                }
-                return total % 26; 
+                key = Math.floor(Math.random() * 26); // Generate a random key between 0 and 25
+                document.getElementById('keyDisplay').textContent = `Key: ${key}`;
+                document.getElementById('key').value = key;
             }
+            return key;
         }
         
         function shift(letter, key) {
@@ -160,7 +176,7 @@
         }
         
         function unshift(letter, key) {
-            return shift(letter, -key); // Decrypt by shifting in the opposite direction
+            return shift(letter, -key);
         }
         
         function encrypt(plaintext, key) {
@@ -204,16 +220,13 @@
             
             if (key === 0 && document.getElementById('key').value.trim() === '') {
                 alert('Please enter a valid key.');
-                document.body.classList.add('glow-red'); // Add the glow effect
+                document.body.classList.add('glow-red');
                 return;
             } else {
-                document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
+                document.body.classList.remove('glow-red');
             }
             
-            // Add green glow effect
             document.body.classList.add('glow-green');
-            
-            // Remove green glow effect after 3 seconds
             setTimeout(() => {
                 document.body.classList.remove('glow-green');
             }, 3000);
@@ -258,13 +271,8 @@
         }
         
         document.getElementById('goBackButton').addEventListener('click', function() {
-            window.location.href = 'index.html'; // or use history.back() to go back to the previous page
+            window.location.href = 'index.html';
         });
     </script>
 </body>
 </html>
-
-
-
-
-
