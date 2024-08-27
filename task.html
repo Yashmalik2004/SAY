@@ -8,30 +8,32 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             font-size: 16px;
-            transition: background-color 0.3s, border-color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             background-color: #002b36; /* Set a blue background color */
-            border: 5px solid transparent;
-            border-image: linear-gradient(45deg, #00f, #0ff, #00f, #0ff);
-            border-image-slice: 1;
-            animation: flicker 1.5s infinite;
             color: #fff; /* Set text color to white for better readability */
-        }
-
-        @keyframes flicker {
-            0% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
-            50% { box-shadow: 0 0 25px #00f, 0 0 40px #0ff; }
-            100% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
+            overflow: hidden; /* Hide overflow to ensure centered content */
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background for container */
+            box-shadow: 0 0 15px #00f, 0 0 30px #0ff; /* Glow effect */
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
+            50% { box-shadow: 0 0 25px #00f, 0 0 40px #0ff; }
+            100% { box-shadow: 0 0 15px #00f, 0 0 30px #0ff; }
         }
 
         h1 {
@@ -83,11 +85,6 @@
             border-radius: 5px;
         }
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px #f00, 0 0 10px #f00, 0 0 15px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00; }
-            100% { text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 60px #f00, 0 0 80px #f00, 0 0 100px #f00; }
-        }
-
         .glow-red {
             animation: glow 1.5s ease-in-out infinite;
             background-color: rgba(255, 0, 0, 0.1); /* Light red background for glow effect */
@@ -111,7 +108,6 @@
     </style>
 </head>
 <body>
-    
     <div class="container">
         <h1>Caesar Cipher</h1>
         
@@ -146,6 +142,12 @@
     </div>
     
     <script>
+        // Your existing JavaScript code
+    </script>
+</body>
+</html>
+ 
+    <script>
         function generateRandomKey(length = 12) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
             let key = '';
@@ -173,7 +175,13 @@
         
         function shift(letter, key) {
             let unicode = letter.charCodeAt(0);
-            const keyValue = parseInt(key, 10);
+            let keyValue = 0;
+            
+            // Convert key to a numeric value
+            for (let i = 0; i < key.length; i++) {
+                keyValue += key.charCodeAt(i);
+            }
+            keyValue = keyValue % 26; // Limit keyValue to 0-25
 
             if (letter >= 'a' && letter <= 'z') {
                 unicode = ((unicode - 97 + keyValue) % 26 + 26) % 26 + 97;
@@ -185,7 +193,22 @@
         }
         
         function unshift(letter, key) {
-            return shift(letter, -key);
+            let unicode = letter.charCodeAt(0);
+            let keyValue = 0;
+
+            // Convert key to a numeric value
+            for (let i = 0; i < key.length; i++) {
+                keyValue += key.charCodeAt(i);
+            }
+            keyValue = keyValue % 26; // Limit keyValue to 0-25
+
+            if (letter >= 'a' && letter <= 'z') {
+                unicode = ((unicode - 97 - keyValue + 26) % 26 + 26) % 26 + 97;
+            } else if (letter >= 'A' && letter <= 'Z') {
+                unicode = ((unicode - 65 - keyValue + 26) % 26 + 26) % 26 + 65;
+            }
+            
+            return String.fromCharCode(unicode);
         }
         
         function encrypt(plaintext, key) {
@@ -227,7 +250,7 @@
             const inputText = document.getElementById('inputText').value;
             const fileInput = document.getElementById('fileInput').files[0];
             
-            if (key === 0 && document.getElementById('key').value.trim() === '') {
+            if (!key.trim()) {
                 alert('Please enter a valid key.');
                 document.body.classList.add('glow-red');
                 return;
