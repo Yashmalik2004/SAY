@@ -100,20 +100,17 @@
     <script>
         function getKeyValue() {
             const keyInput = document.getElementById('key').value;
-
             if (!isNaN(keyInput) && keyInput.trim() !== '') {
-                // If the input is a number, use it directly
                 return parseInt(keyInput, 10) % 26;
             } else {
-                // Otherwise, use the sum of ASCII values
                 let total = 0;
                 for (let i = 0; i < keyInput.length; i++) {
                     total += keyInput.charCodeAt(i);
                 }
-                return total % 26; 
+                return total % 26;
             }
         }
-        
+
         function shift(letter, key) {
             let unicode = letter.charCodeAt(0);
 
@@ -121,15 +118,18 @@
                 unicode = ((unicode - 97 + key) % 26 + 26) % 26 + 97;
             } else if (letter >= 'A' && letter <= 'Z') {
                 unicode = ((unicode - 65 + key) % 26 + 26) % 26 + 65;
+            } else if (letter >= '0' && letter <= '9') {
+                unicode = ((unicode - 48 + key) % 10 + 10) % 10 + 48;
+            } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 126) {
+                unicode = ((unicode - 32 + key) % 95 + 95) % 95 + 32; // 95 printable ASCII characters
             }
-            
             return String.fromCharCode(unicode);
         }
-        
+
         function unshift(letter, key) {
             return shift(letter, -key); // Decrypt by shifting in the opposite direction
         }
-        
+
         function encrypt(plaintext, key) {
             let ciphertext = '';
             for (let i = 0; i < plaintext.length; i++) {
@@ -138,15 +138,13 @@
                     const spacerange = ['{', '}', '|', '~'];
                     const rand = spacerange[Math.floor(Math.random() * spacerange.length)];
                     ciphertext += rand;
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    ciphertext += shift(letter, key);
                 } else {
-                    ciphertext += letter;
+                    ciphertext += shift(letter, key);
                 }
             }
             return ciphertext;
         }
-        
+
         function decrypt(ciphertext, key) {
             let plaintext = '';
             const spacerange = ['{', '}', '|', '~'];
@@ -154,29 +152,27 @@
                 let letter = ciphertext[i];
                 if (spacerange.includes(letter)) {
                     plaintext += ' ';
-                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
-                    plaintext += unshift(letter, key);
                 } else {
-                    plaintext += letter;
+                    plaintext += unshift(letter, key);
                 }
             }
             return plaintext;
         }
-        
+
         function processText() {
             const key = getKeyValue();
             const mode = document.getElementById('mode').value;
             const inputText = document.getElementById('inputText').value;
             const fileInput = document.getElementById('fileInput').files[0];
-            
+
             if (key === 0 && document.getElementById('key').value.trim() === '') {
                 alert('Please enter a valid key.');
-                document.body.classList.add('glow-red'); // Add the glow effect
+                document.body.classList.add('glow-red');
                 return;
             } else {
-                document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
+                document.body.classList.remove('glow-red');
             }
-            
+
             if (fileInput) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -200,7 +196,7 @@
                 document.getElementById('outputText').value = outputText;
             }
         }
-        
+
         function downloadFile() {
             const outputText = document.getElementById('outputText').value;
             if (outputText) {
@@ -215,9 +211,9 @@
                 alert('No data to download.');
             }
         }
-        
+
         document.getElementById('goBackButton').addEventListener('click', function() {
-            window.location.href = 'index.html'; // or use history.back() to go back to the previous page
+            window.location.href = 'index.html';
         });
     </script>
 </body>
