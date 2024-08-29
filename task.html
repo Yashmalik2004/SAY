@@ -4,100 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caesar Cipher with File Upload</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
-    
     <style>
         body {
-            background-color: #000; /* Ensure a dark background for the glow to be visible */
-            margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
-            box-shadow: 0 0 30px 15px #08bdfa inset; /* Light blue glow on the edges */
+            margin: 20px;
+            font-size: 16px; /* Increased base font size */
+            background-color: #077791; /* Blue background */
+            color: #fdfcfc; /* White text color for contrast */
+            transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for glow effect */
         }
 
-        .glow {
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #0ad6f1;
+            border-radius: 5px;
+            background-color: #08c9f9; /* Darker blue background for the container */
+            color: #ec1212; /* Ensure text inside container is white for contrast */
+        }
+
+        h1 {
             text-align: center;
-            font-size: 2.5em;
-            color: #fff;
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
+            font-size: 2.5em; /* Increased font size for headings */
+            color: #faf8f8; /* Ensure heading text color is white */
         }
 
-        .blue-glow {
-            text-align: center;
-            font-size: 2em;
-            color: #08bdfa;
-            text-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
+        label, select, input, textarea, button {
+            font-size: 1em; /* Increase font size for form elements */
+            color: #0e0404; /* White text color for form elements */
         }
 
-        .icon-glow {
-            font-size: 2em;
-            color: #08bdfa;
-            margin: 0 10px;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
+        textarea {
+            font-size: 1em; /* Ensure the text area text is larger */
         }
 
-        .icon-glow:hover {
-            color: #ff0000; /* Change the icon color to red */
-            text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000, 0 0 45px #ff0000, 0 0 60px #ff0000;
-        }
-
-        .btn {
+        button {
             padding: 10px 20px;
             margin-right: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background-color: #007bff; /* Primary button color */
-            color: #fff; /* Text color */
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            font-size: 16px;
-            font-weight: bold; /* Bold text */
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1em; /* Increased font size for buttons */
+            color: #f8fafb; /* White text color for buttons */
+            background-color: #a90aba; /* Darker blue background for buttons */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
         }
 
-        .btn:hover {
-            background-color: #0056b3; /* Darker shade on hover */
+        button:hover {
+            background-color: #0b68c0; /* Even darker blue on hover */
         }
 
-        .btn-primary {
-            background-color: #007bff; /* Primary button color */
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; /* Green glow effect */
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .section-1, .section-2 {
-            padding: 20px;
-        }
-
-        .logo {
+        textarea, input[type="file"] {
             width: 100%;
-            max-width: 300px; /* Set a max-width to maintain aspect ratio */
-            height: auto; /* Ensure the height adjusts automatically */
-            display: block;
-            margin: 0 auto; /* Center the image */
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #0ad2fa;
+            border-radius: 5px;
+            background-color: #f9fafb; /* Darker background for text areas and file input */
+            color: #0b0707; /* White text color */
         }
 
-        @media (max-width: 768px) {
-            .logo {
-                max-width: 80%; /* Adjust the max-width for smaller screens */
-            }
+        #outputText {
+            color: #000; /* Black text color for the output textarea */
+            background-color: #fff; /* White background for better contrast with black text */
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #f00, 0 0 10px #f00, 0 0 15px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00; }
+            100% { text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 60px #f00, 0 0 80px #f00, 0 0 100px #f00; }
+        }
+
+        .glow-red {
+            animation: glow 1.5s ease-in-out infinite;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid red;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="glow">Caesar Cipher</h1>
+        <h1>Caesar Cipher</h1>
         
         <!-- Mode Selection -->
         <label for="mode">Choose Mode:</label>
@@ -120,9 +107,9 @@
         
         <!-- Buttons -->
         <div class="button-group">
-            <button class="glow-green" onclick="processText()">Process Text</button>
-            <button class="glow-green" onclick="downloadFile()">Download File</button>
-            <button class="glow-green" id="goBackButton"><a href="index.html">Go Back</a></button>
+            <button onclick="processText()">Process Text</button>
+            <button onclick="downloadFile()">Download File</button>
+            <button id="goBackButton"><a href="index.html" style="color: #fff; text-decoration: none;">Go Back</a></button>
         </div>
     </div>
     
@@ -142,47 +129,62 @@
                 return total % 26; 
             }
         }
+        
+        function shift(letter, key) {
+            let unicode = letter.charCodeAt(0);
 
-        function shift(character, key) {
-            const charCode = character.charCodeAt(0);
-
-            // Only shift characters between ASCII 32 (space) and 126 (tilde)
-            if (charCode >= 32 && charCode <= 126) {
-                const shiftedCharCode = ((charCode - 32 + key) % 95 + 95) % 95 + 32;
-                return String.fromCharCode(shiftedCharCode);
-            } else {
-                return character;
+            if (letter >= 'a' && letter <= 'z') {
+                unicode = ((unicode - 97 + key) % 26 + 26) % 26 + 97;
+            } else if (letter >= 'A' && letter <= 'Z') {
+                unicode = ((unicode - 65 + key) % 26 + 26) % 26 + 65;
             }
+            
+            return String.fromCharCode(unicode);
         }
-
-        function unshift(character, key) {
-            return shift(character, -key); // Decrypt by shifting in the opposite direction
+        
+        function unshift(letter, key) {
+            return shift(letter, -key); // Decrypt by shifting in the opposite direction
         }
-
+        
         function encrypt(plaintext, key) {
             let ciphertext = '';
             for (let i = 0; i < plaintext.length; i++) {
                 let letter = plaintext[i];
-                ciphertext += shift(letter, key);
+                if (letter === ' ') {
+                    const spacerange = ['{', '}', '|', '~'];
+                    const rand = spacerange[Math.floor(Math.random() * spacerange.length)];
+                    ciphertext += rand;
+                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
+                    ciphertext += shift(letter, key);
+                } else {
+                    ciphertext += letter;
+                }
             }
             return ciphertext;
         }
-
+        
         function decrypt(ciphertext, key) {
             let plaintext = '';
+            const spacerange = ['{', '}', '|', '~'];
             for (let i = 0; i < ciphertext.length; i++) {
                 let letter = ciphertext[i];
-                plaintext += unshift(letter, key);
+                if (spacerange.includes(letter)) {
+                    plaintext += ' ';
+                } else if (letter.charCodeAt(0) >= 32 && letter.charCodeAt(0) <= 122) {
+                    plaintext += unshift(letter, key);
+                } else {
+                    plaintext += letter;
+                }
             }
             return plaintext;
         }
-
+        
         function processText() {
             const key = getKeyValue();
             const mode = document.getElementById('mode').value;
             const inputText = document.getElementById('inputText').value;
             const fileInput = document.getElementById('fileInput').files[0];
-
+            
             if (key === 0 && document.getElementById('key').value.trim() === '') {
                 alert('Please enter a valid key.');
                 document.body.classList.add('glow-red'); // Add the glow effect
@@ -190,7 +192,7 @@
             } else {
                 document.body.classList.remove('glow-red'); // Remove the glow effect if key is valid
             }
-
+            
             if (fileInput) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -214,7 +216,7 @@
                 document.getElementById('outputText').value = outputText;
             }
         }
-
+        
         function downloadFile() {
             const outputText = document.getElementById('outputText').value;
             if (outputText) {
@@ -229,7 +231,7 @@
                 alert('No data to download.');
             }
         }
-
+        
         document.getElementById('goBackButton').addEventListener('click', function() {
             window.location.href = 'index.html'; // or use history.back() to go back to the previous page
         });
