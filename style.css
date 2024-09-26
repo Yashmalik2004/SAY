@@ -5,13 +5,13 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #2b2d52, #3d4f6c); /* Deep space-like gradient background */
+    background: linear-gradient(135deg, #34595e, #e4e5e7); /* Deep space-like gradient background */
     color: #dcdcdc; /* Light gray text for contrast */
 }
 
 h2, .white {
-    color: #00bfff; /* Bright blue for sci-fi glow effect */
-    text-shadow: 0 0 10px rgba(0, 191, 255, 0.8); /* Neon glow effect */
+    color: #f5f7f8; /* Bright blue for sci-fi glow effect */
+    text-shadow: 0 0 10px rgba(27, 81, 135, 0.8); /* Neon glow effect */
 }
 
 a {
@@ -48,7 +48,7 @@ a:hover {
 .section-1 a {
     font-size: 1.6rem;
     padding: 15px;
-    border: 2px solid #00bfff; /* Neon border for links */
+    border: 2px solid #0a90bd; /* Neon border for links */
     border-radius: 8px;
     background-color: rgba(0, 191, 255, 0.1); /* Semi-transparent background */
 }
@@ -66,6 +66,12 @@ h1 {
     font-size: 2.5em; /* Increased font size for headings */
     color: #fff;
     animation: flicker 1.5s infinite; /* Apply flicker animation */
+}
+
+/* New green glow effect */
+.glow-green {
+    border-image: linear-gradient(45deg, #0f0, #0f0, #0f0, #0f0);
+    box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
 }
 
 .section-1 a:hover {
@@ -129,4 +135,3 @@ h1 {
         padding-top: 2rem;
     }
 }
-
