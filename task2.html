@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            color: #003366;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #004d99;
+            margin-bottom: 20px;
+        }
+        textarea, input[type="text"], input[type="file"] {
+            width: 80%; /* Centered width */
+            margin: 10px 0;
+            border: 1px solid #0077cc;
+            border-radius: 5px;
+            padding: 10px;
+            resize: none; /* Prevent resizing */
+        }
+        button {
+            margin: 10px 5px;
+            padding: 10px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005999;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically */
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Vigenère Cipher</h2>
+
+<label for="keyword">Keyword:</label>
+<input type="text" id="keyword" required>
+
+<label for="text">Text:</label>
+<textarea id="text" required></textarea>
+
+<input type="file" id="fileInput" accept=".txt">
+<button onclick="uploadFile()">Upload File</button>
+
+<div class="button-container">
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button>
+    <button onclick="downloadFile()">Download Result</button>
+</div>
+
+<h3>Result:</h3>
+<textarea id="result" readonly></textarea>
+
+<div class="button-container">
+    <button onclick="goBack()">Go Back</button>
+</div>
+
+<script>
+function vigenereCipher(text, keyword, encrypt = true) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result = '';
+    const keywordRepeater = keyword.toUpperCase().repeat(Math.ceil(text.length / keyword.length)).slice(0, text.length);
+    
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i].toUpperCase();
+        const keyChar = keywordRepeater[i];
+        
+        if (alphabet.includes(char)) {
+            const textIndex = alphabet.indexOf(char);
+            const keyIndex = alphabet.indexOf(keyChar);
+            const shift = encrypt ? keyIndex : -keyIndex;
+            const newIndex = (textIndex + shift + 26) % 26; // Ensure positive index
+            result += alphabet[newIndex];
+        } else {
+            result += char; // Non-alphabetic characters remain unchanged
+        }
+    }
+    
+    return result;
+}
+
+function encrypt() {
+    const text = document.getElementById('text').value;
+    const keyword = document.getElementById('keyword').value;
+    const encryptedText = vigenereCipher(text, keyword, true);
+    document.getElementById('result').value = encryptedText;
+}
+
+function decrypt() {
+    const text = document.getElementById('text').value;
+    const keyword = document.getElementById('keyword').value;
+    const decryptedText = vigenereCipher(text, keyword, false);
+    document.getElementById('result').value = decryptedText;
+}
+
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please select a file to upload.');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        document.getElementById('text').value = event.target.result;
+    };
+    reader.readAsText(file);
+}
+
+function downloadFile() {
+    const resultText = document.getElementById('result').value;
+    const blob = new Blob([resultText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'result.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function goBack() {
+    window.location.href = 'index.html'; // Redirect to index.html
+}
+</script>
+
+</body>
+</html>
